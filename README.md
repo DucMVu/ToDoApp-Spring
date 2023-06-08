@@ -15,3 +15,4 @@ There are a number of third-party dependencies used in this project. See pom.xml
 * Update task (api/v1/tasks/:id) `{"task": "run 10km"}`
 * Delete task (api/v1/tasks/:id)
 * Delete all tasks (api/v1/tasks/all)
+* Search (api/v1/tasks/search)

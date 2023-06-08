@@ -35,4 +35,8 @@ public class TaskService {
     public void deleteAll() {
         taskRepository.deleteAll();
     }
+
+    public List<Task> search(String searchTerm) {
+        return taskRepository.search(searchTerm);
+    }
 }

@@ -1,5 +1,6 @@
 package ducvu.demo.controllers;
 
+import ducvu.demo.models.SearchDTO;
 import ducvu.demo.models.Task;
 import ducvu.demo.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,11 @@ public class TaskController {
     public ResponseEntity<Boolean> deleteAllTasks() {
         taskService.deleteAll();
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Task>> search(@RequestBody SearchDTO searchDTO) {
+        String searchTerm = searchDTO.getSearchTerm();
+        return ResponseEntity.ok(taskService.search(searchTerm));
     }
 }
