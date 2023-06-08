@@ -1,21 +1,29 @@
 package ducvu.demo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="task")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String task;
 
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Task() {}
-    public Task(String task) {
+
+    public Task(Long id, String task, User user) {
+        this.id = id;
         this.task = task;
+        this.user = user;
     }
+
     public Long getId() {
         return id;
     }
@@ -27,5 +35,13 @@ public class Task {
     }
     public void setTask(String task) {
         this.task = task;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
