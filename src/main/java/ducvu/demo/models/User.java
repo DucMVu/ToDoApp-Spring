@@ -7,7 +7,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.List;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user")
-    @Cascade(CascadeType.ALL)
     private List<Task> tasks;
 
     public User() {};
+
     public User(Long id, String name, List<Task> tasks) {
         this.id = id;
         this.name = name;
@@ -47,14 +47,5 @@ public class User {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
-    }
-
-//    public void addTask(Task task) {
-//        task.setUser(this);
-//    }
-
-    public void addTasks(List<Task> tasks) {
-        this.tasks = tasks;
-        tasks.forEach(t -> t.setUser(this));
     }
 }

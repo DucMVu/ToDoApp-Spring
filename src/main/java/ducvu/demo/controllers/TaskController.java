@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/v1/tasks")
+@RequestMapping("/api")
 public class TaskController {
 
     @Autowired
@@ -23,46 +23,46 @@ public class TaskController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
+    @GetMapping("/v1/tasks/all")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAll());
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-//        User user = task.getUser();
-//        List<Task> taskList = List.of(task);
-//        user.addTasks(taskList);
+    @PostMapping("v1/users/{userId}/tasks")
+    public ResponseEntity<Task> createTask(@PathVariable Long userId, @RequestBody Task task) {
+        User user = userService.findById(userId);
+        task.setUser(user);
+
         return ResponseEntity.ok(taskService.createNewTask(task));
     }
 
-    @PutMapping("/addUserToTask/{id}")
+    @PutMapping("/v1/tasks/addUserToTask/{id}")
     public ResponseEntity<Task> addUserToTask(@PathVariable Long id, @RequestBody Task task, @RequestBody Long userId) {
         User user = userService.findById(userId);
         task.setUser(user);
         return ResponseEntity.ok(taskService.updateTask(task));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/v1/tasks/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
         return ResponseEntity.ok(taskService.updateTask(task));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/tasks/{id}")
     public ResponseEntity<Boolean> deleteTask(@PathVariable Long id) {
         Task task = taskService.findById(id);
         taskService.deleteTask(task);
         return ResponseEntity.ok(true);
     }
 
-    @DeleteMapping("/all")
+    @DeleteMapping("/v1/tasks/all")
     public ResponseEntity<Boolean> deleteAllTasks() {
         taskService.deleteAll();
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/v1/tasks/search")
     public ResponseEntity<List<Task>> search(@RequestBody SearchDTO searchDTO) {
         String searchTerm = searchDTO.getSearchTerm();
         return ResponseEntity.ok(taskService.search(searchTerm));
